@@ -19,7 +19,7 @@ def update_eta(eta, u_x0, b_h, m_h, k, p, dt):
 
 
 def update_displacement(u, uprev,  F, A, B, C):
-    unext = A*u + B*uprev + C*F
+    unext = A*u + B*uprev #+ C*F
     return unext, u
 
 
