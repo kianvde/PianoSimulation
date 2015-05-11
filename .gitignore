@@ -1,0 +1,9 @@
+
+*.iml
+*.pyc
+*.f90~
+data/
+.idea/
+
+# test files
+test.py
