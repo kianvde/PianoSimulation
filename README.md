@@ -1,2 +1,3 @@
 # PianoSimulation
-Physical simulation of a piano
+
+STOP. Hammertime.
