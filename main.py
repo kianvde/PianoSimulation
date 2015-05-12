@@ -1,6 +1,5 @@
-import numpy as np
 import matplotlib.pyplot as plt
-from matplotlib.animation import ArtistAnimation
+from matplotlib.animation import FuncAnimation
 from update import *
 import wave
 import struct
@@ -9,10 +8,10 @@ np.set_printoptions(threshold=np.nan, precision=3)
 # parameter imports
 from parameters import l, n, n_t, x, n0, t, dt, f_s
 
-animate = False
-plot_waveform = False
-plot_frequency = False
-
+animate = True
+plot_waveform = True
+plot_frequency = True
+write_file = False
 
 # calculate matrices
 A, B = calculate_AB()
@@ -24,18 +23,13 @@ u = u_old = 1.*np.zeros(n)
 u_bridge = np.array([])
 
 ims = []
-if animate:
-    fig, ax = plt.subplots()
-
 for i in range(n_t):
 
     u_bridge = np.append(u_bridge, u[-1])
 
     # collect u for animation
-    if i%(n_t/2000)==0 and animate:
-        plt.axis((0, l, -.0001, .0005))
-        im, = plt.plot(x, u, 'b')
-        ims.append([im])
+    if i<1e4 and i%5==0 and animate:
+        ims.append([u])
 
     if eta[1] > eta[0]:
         force = calculate_force(eta[1], u[n0])
@@ -45,13 +39,30 @@ for i in range(n_t):
         u, u_old = update_displacement(u, u_old, A, B)
 
 if animate:
-    animation = ArtistAnimation(fig, ims, interval=100, repeat_delay=500, blit=True)
+
+    fig = plt.figure()
+    ax = plt.axes(xlim=(0, l), ylim=(-.0001, .0005))
+    lines = [plt.plot([], [])[0], plt.plot([], [], 'r', lw=5)[0], plt.plot([], [], 'r')[0]]
+    lines[1].linewidth = 5
+    lines[1].color = 'r'
+    def init():
+        for line in lines:
+            line.set_data([], [])
+        return lines
+
+    def animate(i):
+        lines[0].set_data(x, ims[i])
+        lines[1].set_data([.25*l, l*(.25 + float(i)/(2*len(ims)))], [0.0004, 0.0004])
+        lines[2].set_data([.25*l, .75*l], [0.0004, 0.0004])
+        return lines
+
+    an = FuncAnimation(fig, animate, init_func=init, frames=len(ims), interval=20, blit=True)
     plt.show()
 
 if plot_waveform:
     time_vector = np.linspace(0,t,n_t)
     plt.figure()
-    plt.plot(time_vector[:1000],u_bridge[:1000])
+    plt.plot(time_vector[-10000:],u_bridge[-10000:])
     plt.show()
 
 if plot_frequency:
@@ -61,12 +72,13 @@ if plot_frequency:
     plt.plot(freq[:n_t/160],spectrum[:n_t/160])
     plt.show()
 
-w = wave.open("test.wav",'w')
-w.setparams((1, 2, f_s, n_t, 'NONE', 'not compressed'))
-max_amplitude = 32767.0
-u_norm = u_bridge/(max(u_bridge)) * max_amplitude
-samples = u_norm.astype(int)
-u_wav = samples.tostring()
-# u_wav = struct.pack('h', samples.tolist())
-w.writeframes(u_wav)
-w.close()
+if write_file:
+    w = wave.open("test.wav",'w')
+    w.setparams((1, 2, f_s, n_t, 'NONE', 'not compressed'))
+    max_amplitude = 32767.0
+    u_norm = u_bridge/(max(u_bridge)) * max_amplitude
+    samples = u_norm.astype(int)
+    u_wav = samples.tostring()
+    # u_wav = struct.pack('h', samples.tolist())
+    w.writeframes(u_wav)
+    w.close()
