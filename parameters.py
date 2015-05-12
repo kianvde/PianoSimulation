@@ -1,7 +1,7 @@
 import numpy as np
 # in this file the parameters used in the simulation are set
 
-t = .2
+t = 1.
 
 # string parameters
 f1 = 262.1895           # fundamental string frequency
