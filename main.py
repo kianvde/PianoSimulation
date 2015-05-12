@@ -8,10 +8,10 @@ np.set_printoptions(threshold=np.nan, precision=3)
 # parameter imports
 from parameters import l, n, n_t, x, n0, t, dt, f_s
 
-animate = True
-plot_waveform = True
-plot_frequency = True
-write_file = False
+animate = False
+plot_waveform = False
+plot_frequency = False
+write_file = True
 
 # calculate matrices
 A, B = calculate_AB()
@@ -74,11 +74,13 @@ if plot_frequency:
 
 if write_file:
     w = wave.open("test.wav",'w')
-    w.setparams((1, 2, f_s, n_t, 'NONE', 'not compressed'))
+    w.setparams((1, 2, 2*f_s, n_t, 'NONE', 'not compressed'))
     max_amplitude = 32767.0
-    u_norm = u_bridge/(max(u_bridge)) * max_amplitude
+    print max(abs(u_bridge))
+    u_norm = u_bridge/(max(abs(u_bridge))) * max_amplitude
     samples = u_norm.astype(int)
     u_wav = samples.tostring()
+    # print u_wav
     # u_wav = struct.pack('h', samples.tolist())
     w.writeframes(u_wav)
     w.close()
