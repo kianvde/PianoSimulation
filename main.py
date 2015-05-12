@@ -1,17 +1,11 @@
-import matplotlib.pyplot as plt
-from matplotlib.animation import FuncAnimation
 from update import *
 from plot_and_save import *
-import wave
-import struct
-np.set_printoptions(threshold=np.nan, precision=3)
-
-# parameter imports
 from parameters import n, n_t, n0
 
-animate = True
-plot = True
-write_file = True
+animate = True          # animate the wave in the string upon completion
+plot = True             # plot the waveform and frequency spectrum on the piano bridge
+write_file = True       # write the waveform on the bridge to a .wav file
+filename = "test.wav"
 
 # calculate matrices
 A, B = calculate_AB()
@@ -26,8 +20,6 @@ u_bridge = np.array([])
 for i in range(n_t):
 
     u_bridge = np.append(u_bridge, u[-1])
-
-    # collect u for animation
     if i%10==0 and animate:
         ims.append([u])
 
@@ -43,4 +35,4 @@ if animate: animate_string(ims)
 if plot:
     plot_u_bridge(u_bridge)
     plot_frequency(u_bridge)
-if write_file: save_to_wav(u_bridge, "test.wav")
+if write_file: save_to_wav(u_bridge, filename)

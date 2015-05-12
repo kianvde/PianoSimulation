@@ -12,8 +12,15 @@ from parameters import l, x, t, dt, n_t, f_s
 # animate the string from the saved positions
 def animate_string(ims):
 
+    y_max = y_min = 0
+    for [im] in ims:
+        if max(im) > y_max:
+            y_max = max(im)
+        if min(im) < y_min:
+            y_min = min(im)
+
     fig = plt.figure()
-    ax = plt.axes(xlim=(0, l), ylim=(-.0001, .0005))
+    ax = plt.axes(xlim=(0, l), ylim=(2*y_min, 2*y_max))
     lines = [plt.plot([], [])[0], plt.plot([], [], 'r', lw=5)[0], plt.plot([], [], 'r')[0]]
     lines[1].linewidth = 5
     lines[1].color = 'r'
@@ -24,8 +31,8 @@ def animate_string(ims):
 
     def animate(i):
         lines[0].set_data(x, ims[i])
-        lines[1].set_data([.25*l, l*(.25 + float(i)/(2*len(ims)))], [0.0004, 0.0004])
-        lines[2].set_data([.25*l, .75*l], [0.0004, 0.0004])
+        lines[1].set_data([.25*l, l*(.25 + float(i)/(2*len(ims)))], 1.5*y_max*np.ones(2))
+        lines[2].set_data([.25*l, .75*l], 1.5*y_max*np.ones(2))
         return lines
 
     an = FuncAnimation(fig, animate, init_func=init, frames=len(ims), interval=20, blit=True)
@@ -43,6 +50,7 @@ def plot_frequency(u_bridge):
     freq = np.linspace(0, 1/dt, n_t)
     spectrum = np.abs(np.fft.fft(u_bridge))
     plt.figure()
+    plt.ylim((0, 1.5*max(spectrum[int(n_t/1000):int(n_t/2)])))
     plt.plot(freq[:n_t/160],spectrum[:n_t/160])
     plt.show()
 
