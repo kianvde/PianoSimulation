@@ -12,9 +12,9 @@ from parameters import c, dx, dt, n, k, p
 # update the vector with eta values
 # eta -> vector with eta values
 # f0 -> force at the point x0
-def update_eta(eta = [], f0 = 0, first_run = False):
+def update_eta(eta=[], f0=0, init=False):
 
-    if first_run:
+    if init:
         eta = 1.*np.zeros(2)
         eta[0] -= v_h*dt
         return eta

@@ -1,5 +1,7 @@
 # play sounds from wav files with key presses
 # run from commandline: EG "python play_notes.py" in git Bash
+#
+# NB: PyAudio needs to be installed
 
 import string
 from msvcrt import getch
