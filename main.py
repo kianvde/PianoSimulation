@@ -2,14 +2,16 @@ import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.animation import ArtistAnimation
 from update import *
+import wave
+import struct
 np.set_printoptions(threshold=np.nan, precision=3)
 
 # parameter imports
-from parameters import l, n, n_t, x, n0, t, dt
+from parameters import l, n, n_t, x, n0, t, dt, f_s
 
-animate = True
-plot_waveform = True
-plot_frequency = True
+animate = False
+plot_waveform = False
+plot_frequency = False
 
 
 # calculate matrices
@@ -58,3 +60,13 @@ if plot_frequency:
     plt.figure()
     plt.plot(freq[:n_t/160],spectrum[:n_t/160])
     plt.show()
+
+w = wave.open("test.wav",'w')
+w.setparams((1, 2, f_s, n_t, 'NONE', 'not compressed'))
+max_amplitude = 32767.0
+u_norm = u_bridge/(max(u_bridge)) * max_amplitude
+samples = u_norm.astype(int)
+u_wav = samples.tostring()
+# u_wav = struct.pack('h', samples.tolist())
+w.writeframes(u_wav)
+w.close()
