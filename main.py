@@ -74,12 +74,12 @@ if plot_frequency:
 
 if write_file:
     w = wave.open("test.wav",'w')
-    w.setparams((1, 2, 2*f_s, n_t, 'NONE', 'not compressed'))
+    w.setparams((1, 2, f_s, n_t, 'NONE', 'not compressed'))
     max_amplitude = 32767.0
-    print max(abs(u_bridge))
     u_norm = u_bridge/(max(abs(u_bridge))) * max_amplitude
     samples = u_norm.astype(int)
-    u_wav = samples.tostring()
+    NumElements = len(samples)
+    u_wav = struct.pack('h'*NumElements,*samples)
     # print u_wav
     # u_wav = struct.pack('h', samples.tolist())
     w.writeframes(u_wav)
