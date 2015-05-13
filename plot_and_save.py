@@ -1,13 +1,15 @@
 # plotting, animation and saving routines
 
-import numpy as np
 import struct
 import wave
+
+import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.animation import FuncAnimation
 
+
 # parameter imports
-from parameters import l, x, t, dt, n_t, f_s
+from Parameters.parametersC5 import l, x, t, dt, n_t, f_s
 
 # animate the string from the saved positions
 def animate_string(ims):
