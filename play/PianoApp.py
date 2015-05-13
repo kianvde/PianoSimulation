@@ -2,7 +2,7 @@
 
 try:
     import sys
-    from wav_thread import *
+    from WavThread import *
     import pygame
     from pygame.locals import *
 except ImportError, err:
@@ -10,10 +10,11 @@ except ImportError, err:
     sys.exit(2)
 
 ## Pointers ##
-notes = ['c', 'd']                 # the notes
-wav = {}                           # wav format file names
-identifier = {'c':K_c,             # identifiers in a dictionary
-              'd':K_d}
+notes = ['c', 'd', 'e']             # the notes
+wav = {}                            # wav format file names
+identifier = {'c':K_c,              # identifiers in a dictionary
+              'd':K_d,
+              'e':K_e}
 for n in notes: wav[n] = n + ".wav"
 
 ## class ##
@@ -29,13 +30,16 @@ class PianoApp:
         pygame.display.set_caption('Piano')
         self.font = pygame.font.SysFont('Arial', 60)
         self.running = True
+        self.stop_on_release = False
 
         # images
         self.up = pygame.image.load("key_up.png").convert()
         self.down = pygame.image.load("key_down.png").convert()
 
-        self.threads = []                       # running .wav threads
-        self.isPressed = {}                     # holds key press booleans
+        self.threads = []           # array .wav threads
+        if self.stop_on_release:
+            self.threads = {}       # dict .wav threads
+        self.isPressed = {}         # holds key press booleans
 
         self.scr = pygame.display.set_mode((len(notes)*self.up.get_width(),
                                             self.up.get_height()), pygame.HWSURFACE)
@@ -72,6 +76,10 @@ class PianoApp:
                     self.isPressed[note] = True
                     self.play_note(note)
                 elif not keys[identifier[note]]:
+                    if note in self.isPressed:
+                        if self.stop_on_release and self.isPressed[note] and note in self.threads:
+                            self.threads[note].stop()
+                            self.threads[note].join()
                     self.isPressed[note] = False
 
             self.remove_finished_threads()
@@ -82,17 +90,28 @@ class PianoApp:
         self.on_cleanup()
 
     def play_note(self, note):
+
         try:
-            self.threads.append(WavThread(wav[note]))
-            self.threads[-1].start()
-            print note
+            if self.stop_on_release:
+                self.threads[note] = WavThread(wav[note])
+                self.threads[note].start()
+            else:
+                self.threads.append(WavThread(wav[note]))
+                self.threads[-1].start()
         except IOError: pass
 
     def remove_finished_threads(self):
-        for t in self.threads:
-            if not t.isAlive():
-                t.handled = True
-        self.threads = [t for t in self.threads if not t.handled]
+
+        if self.stop_on_release:
+            for note in self.threads:
+                if not self.threads[note].isAlive():
+                    self.threads[note].handled = True
+            self.threads = {note:self.threads[note] for note in self.threads if not self.threads[note].handled}
+        else:
+            for t in self.threads:
+                if not t.isAlive():
+                    t.handled = True
+            self.threads = [t for t in self.threads if not t.handled]
 
 # run the app
 pianoApp = PianoApp()
