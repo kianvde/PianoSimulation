@@ -14,39 +14,47 @@ notes = ['c', 'd']                 # the notes
 wav = {}                           # wav format file names
 identifier = {'c':K_c,             # identifiers in a dictionary
               'd':K_d}
-for note in notes: wav[note] = note + ".wav"
+for n in notes: wav[n] = n + ".wav"
 
+## class ##
 class PianoApp:
     def __init__(self):
-        self._running = True
-        self._display_surf = None
+        self.running = True
+        self.scr = None
         self._image_surf = None
 
     def on_init(self):
         pygame.init()
-        self._display_surf = pygame.display.set_mode((800,500), pygame.HWSURFACE)
+        self.scr = pygame.display.set_mode((1,1), pygame.HWSURFACE)
         pygame.display.set_caption('Piano')
-        self._running = True
-        self.key_down = False
+        self.font = pygame.font.SysFont('Arial', 60)
+        self.running = True
 
         # images
-        self.key_up_surf = pygame.image.load("key_up.png").convert()
-        self.key_down_surf = pygame.image.load("key_down.png").convert()
+        self.up = pygame.image.load("key_up.png").convert()
+        self.down = pygame.image.load("key_down.png").convert()
 
         self.threads = []                       # running .wav threads
         self.isPressed = {}                     # holds key press booleans
 
+        self.scr = pygame.display.set_mode((len(notes)*self.up.get_width(),
+                                            self.up.get_height()), pygame.HWSURFACE)
+
     def on_event(self, event):
         if event.type == QUIT:
-            self._running = False
+            self.running = False
 
     def on_render(self):
-        if self.key_down:
-            self._display_surf.blit(self.key_down_surf,(0,0))
-        else:
-            self._display_surf.blit(self.key_up_surf,(0,0))
-        for i in range(8):
-            self._display_surf.blit(self.key_up_surf,((i+1)*self.key_up_surf.get_width(),0))
+        for i, note in enumerate(notes):
+            w = self.down.get_width()
+            h = self.down.get_height()
+            if self.isPressed[note]:
+                self.scr.blit(self.down,((i*w,0)))
+            else:
+                self.scr.blit(self.up,((i*w,0)))
+
+            self.scr.blit(self.font.render(note.upper(), True, (0,0,0)), ((i+.5)*w-16, 10))
+
         pygame.display.flip()
 
     def on_cleanup(self):
@@ -54,9 +62,9 @@ class PianoApp:
 
     def on_execute(self):
         if self.on_init() == False:
-            self._running = False
+            self.running = False
 
-        while(self._running):
+        while(self.running):
 
             keys = pygame.key.get_pressed()
             for note in notes:
@@ -65,8 +73,6 @@ class PianoApp:
                     self.play_note(note)
                 elif not keys[identifier[note]]:
                     self.isPressed[note] = False
-
-            self.key_down = self.isPressed['c'] or self.isPressed['d']
 
             self.remove_finished_threads()
 
