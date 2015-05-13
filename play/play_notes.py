@@ -5,36 +5,61 @@
 
 # NB: PyAudio needs to be installed
 
-import string
-from msvcrt import getch
 from wav_thread import *
-
-chunk = 1024
-# wav format file names in a dictionary
-wav = {}
-wav['c'] = r"test.wav"
-wav['d'] = r"test.wav"
+from pygame_helper import *
+import pygame
 
 notes = ['c', 'd']
-threads = []
+wav = {}                        # wav format file names in a dictionary
+wav['c'] = r"test.wav"
+wav['d'] = r"test.wav"
+identifier = {}                 # identifiers in a dictionary
+identifier['c'] = pygame.K_c
+identifier['d'] = pygame.K_d
 
-# run while user does not press q
-note = string.lower(getch())
-while True:
+def main():
 
-    # remove finished threads
+    # init pygame screen
+    scr, bg = init_pygame(notes)
+
+    t = []              # holds the running wav threads
+    isPressed = {}      # isPressed dictionary with boolean isPressed? for all notes
+
+    running = True
+    while running:
+
+        # acquire key press and play keys
+        keys = pygame.key.get_pressed()
+        for note in notes:
+            if keys[identifier[note]] and not isPressed[note]:
+                isPressed[note] = True
+                play_note(note, t)
+            elif not keys[identifier[note]]:
+                isPressed[note] = False
+
+        t = remove_finished_threads(t)  # remove finished threads
+        scr, running = display(scr, bg) # display
+
+    # quit pygame
+    pygame.quit()
+
+# helper functions
+
+# play a note from notes if it is pressed down and update isPressed
+def play_note(note, threads):
+        try:
+            threads.append(WavThread(wav[note]))
+            threads[-1].start()
+            print note
+        except IOError: pass
+
+
+# remove finished WavThreads
+def remove_finished_threads(threads):
     for t in threads:
         if not t.isAlive():
             t.handled = True
     threads = [t for t in threads if not t.handled]
+    return threads
 
-    # play the note pressed if it is in notes
-    if note in notes:
-        # print note
-        try:
-            threads.append(WavThread(wav[note]))
-            threads[-1].start()
-        except IOError: pass
-    elif note == 'q':
-        break
-    note = string.lower(getch())
+main()
