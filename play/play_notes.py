@@ -6,7 +6,11 @@
 # NB: PyAudio needs to be installed
 
 import string
-from msvcrt import getch
+try:
+    from msvcrt import getch
+except ImportError:
+    import getch
+
 from wav_thread import *
 
 chunk = 1024
