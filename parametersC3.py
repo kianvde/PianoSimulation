@@ -4,17 +4,20 @@ import numpy as np
 # string parameters
 f1 = 131.11           # fundamental string frequency
 l = 1.259                # string length
-m_s = 3.934e-3          # total string mass
-d = 1.063e-3
+rho = 7850             # linear string density
+d = 1.063e-3            # diameter
+A = (np.pi*d**2)/4  # Cross section
+m_s = l*A*rho         # total string mass
+
 
 t_e = 759.              # string tension
 b1 = 1.1                # air damping coefficient
 b2 = 2.7e-4             # string internal friction coefficient
 I = (np.pi * d**4)/(64) # Moment of inertia
-A = (np.pi*d**2)/4
+
 E = 2.02e11
 epsilon = I/A * (E * A)/(t_e*l**2)       # string stiffness parameter
-rho = 7850             # linear string density
+
 c = (t_e/rho)**.5       # wave velocity
 kappa = epsilon*(c**2)*(l**2)   # string stiffness coefficient
 
