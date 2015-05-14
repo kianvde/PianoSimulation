@@ -2,9 +2,9 @@ import numpy as np
 # in this file the parameters used in the simulation are set
 
 # string parameters
-f1 = 247.52         # fundamental string frequency
-l = 0.694               # string length
-d = 1.013e-3
+f1 = 555.60          # fundamental string frequency
+l = 0.326               # string length
+d = 0.928e-3
 rhoV = 7850.
 A = np.pi * (d/2.)**2
 m_s = A * l * rhoV          # total string mass
@@ -23,7 +23,7 @@ kappa = epsilon*(c**2)*(l**2)   # string stiffness coefficient
 
 # sampling parameters
 t = 3.                  # simulation time
-f_s = 8*44.1e3          # sampling frequency
+f_s = 16*44.1e3          # sampling frequency
 m = 140                 # number of string segments
 dx = l/m                # spatial grid distance
 dt = 1/f_s              # time step
@@ -32,10 +32,10 @@ labda = c*dt/dx         # cfl number
 n = m+1                 # number of gridpoints
 
 # hammer parameters
-m_h = 8.77e-3           # hammer mass
-p = 2.406                # hammer felt stiffness exponent
+m_h = 7.90e-3           # hammer mass
+p = 2.611                 # hammer felt stiffness exponent
 b_h = 1.e-4             # fluid damping coefficient
-k = 5.168e9               # hammer felt stiffness
+k = 2.862e10               # hammer felt stiffness
 a = 0.12                # relative striking position
 v_h = 5.                # initial hammer velocity
 x0 = a*l                # hammer impact point
@@ -46,10 +46,8 @@ zeta_l = 1.e20          # left end normalized impedance
 zeta_b = 1000.          # bridge normalized impedance
 
 x = np.linspace(0, l, n)                          # spatial grid points
-g = np.cos(50*np.pi*(x-x0))*(np.abs(x-x0) < .01)    # hammer impact window
+g = np.cos(50*np.pi*(x-x0))*(np.abs(x-x0) < .005)    # hammer impact window
 
 print "stable?", labda < 0.8, "=> labda:", labda
 print f1
 print c / (2*l)
-
-
