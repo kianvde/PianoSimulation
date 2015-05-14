@@ -31,7 +31,7 @@ for j, num in enumerate(nums):
         if "piano"+tonePrev+".wav" not in present:
             print "piano"+tonePrev
             bashPythoncommand = "/home/kian/anaconda/bin/python"
-            # p = Popen([bashPythoncommand, 'main.py'])
+            p = Popen([bashPythoncommand, 'main.py'])
         print modulePrev, moduleNext
         for name in names:
             bashCommand_module = "sed -i -e 's/" + modulePrev +"/"+ moduleNext+"/g' "+ "./"+name+".py"
