@@ -10,7 +10,7 @@ A = (np.pi*d**2)/4  # Cross section
 m_s = l*A*rho         # total string mass
 rho = m_s/l
 
-t_e = 763.              # string tension
+t_e = rho * 4. * l**2 * f1**2              # string tension
 b1 = 1.1                # air damping coefficient
 b2 = 2.7e-4             # string internal friction coefficient
 I = (np.pi * d**4)/(64) # Moment of inertia
@@ -37,7 +37,7 @@ n = m+1
 m_h = 9.02e-3           # hammer mass
 p = 2.365                 # hammer felt stiffness exponent
 b_h = 1.e-4             # fluid damping coefficient
-k = 3.169e7               # hammer felt stiffness
+k = 3.169e9               # hammer felt stiffness
 a = 0.12                # relative striking position
 v_h = 5.                # initial hammer velocity
 x0 = a*l                # hammer impact point
@@ -51,5 +51,5 @@ x = np.linspace(0, l, n)                            # spatial grid points
 g = np.cos(25*np.pi*(x-x0))*(np.abs(x-x0) < .02)    # hammer impact window
 
 print "stable?", labda < 0.8, "=> labda:", labda
-print x[1] - x[0]
-print dx
+print f1
+print c / (2*l)

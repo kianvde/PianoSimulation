@@ -2,10 +2,10 @@ import numpy as np
 # in this file the parameters used in the simulation are set
 
 # string parameters
-f1 = 131.11           # fundamental string frequency
-l = 1.259                # string length
+f1 = 185.41            # fundamental string frequency
+l = 0.909                # string length
 rho = 7850.             # linear string density
-d = 1.063e-3            # diameter
+d = 1.045e-3            # diameter
 A = (np.pi*d**2)/4  # Cross section
 m_s = l*A*rho         # total string mass
 rho = m_s/l
@@ -33,10 +33,10 @@ labda = c*dt/dx         # cfl number
 n = m+1
 
 # hammer parameters
-m_h = 9.45e-3           # hammer mass
-p = 2.312                 # hammer felt stiffness exponent
+m_h = 9.08e-3           # hammer mass
+p = 2.356                 # hammer felt stiffness exponent
 b_h = 1.e-4             # fluid damping coefficient
-k = 1.347e9               # hammer felt stiffness
+k = 2.804e9               # hammer felt stiffness
 a = 0.12                # relative striking position
 v_h = 5.                # initial hammer velocity
 x0 = a*l                # hammer impact point
