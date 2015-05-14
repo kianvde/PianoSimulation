@@ -46,7 +46,7 @@ zeta_l = 1.e20          # left end normalized impedance
 zeta_b = 1000.          # bridge normalized impedance
 
 x = np.linspace(0, l, n)                          # spatial grid points
-g = np.cos(50*np.pi*(x-x0))*(np.abs(x-x0) < .005)    # hammer impact window
+g = np.cos(50*np.pi*(x-x0))*(np.abs(x-x0) < .01)    # hammer impact window
 
 print "stable?", labda < 0.8, "=> labda:", labda
 print f1

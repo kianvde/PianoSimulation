@@ -23,7 +23,7 @@ print epsilon
 kappa = epsilon*(c**2)*(l**2)   # string stiffness coefficient
 
 # sampling parameters
-t = 1.                  # simulation time
+t = 3.                  # simulation time
 f_s = 16*44.1e3          # sampling frequency
 m = 140                 # number of string segments
 dx = l/m                # spatial grid distance
