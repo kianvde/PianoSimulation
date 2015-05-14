@@ -1,10 +1,10 @@
 from update import *
 from plot_and_save import *
-from Parameters.parametersA3 import n, n_t, n0
+from Parameters.parametersB5 import n, n_t, n0
 animate = True         # animate the wave in the string upon completion
 plot = False             # plot the waveform and frequency spectrum on the piano bridge
 write_file = True       # write the waveform on the bridge to a .wav file
-filename = "pianoA3.wav"
+filename = "testB5.wav"
 
 # calculate matrices
 A, B = calculate_AB()
