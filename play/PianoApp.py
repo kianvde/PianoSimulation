@@ -16,7 +16,7 @@ class PianoApp:
         self.scr = None
         self._image_surf = None
 
-    def on_init(self):
+        # initialize pygame
         pygame.init()
         self.scr = pygame.display.set_mode((1,1), pygame.HWSURFACE)
         pygame.display.set_caption('Piano')
@@ -32,6 +32,7 @@ class PianoApp:
         self.threads = {}       # dict .wav threads
         self.isPressed = {}     # holds key press booleans
 
+        # initialize .wav threads
         for note in notes:
             self.isPressed[note] = False
             t = time()
@@ -45,38 +46,37 @@ class PianoApp:
                 break
             self.threads[note].start()
 
+        # set screen to correct size
         self.scr = pygame.display.set_mode((len(notes)*self.w,
                                             self.h), pygame.HWSURFACE)
 
-    def on_event(self, event):
+    def event(self, event):
         if event.type == QUIT:
             self.running = False
 
-    def on_render(self):
+    def render(self):
         for i, note in enumerate(notes):
             if self.isPressed[note]:
                 self.scr.blit(self.down,((i*self.w,0)))
             else:
                 self.scr.blit(self.up,((i*self.w,0)))
 
-            self.scr.blit(self.font.render(note.upper(), True, (0,0,0)), ((i+.5)*self.w-16, 10))
+            self.scr.blit(pygame.transform.rotate(self.font.render(note.upper(), True, (0,0,0)),90),
+                         ((i+.5)*self.w-30, 10))
 
         pygame.display.flip()
 
-    def on_cleanup(self):
+    def cleanup(self):
         for note in notes:
             self.threads[note].terminate()
         pygame.quit()
 
-    def on_execute(self):
-        if self.on_init() == False:
-            self.running = False
+    def run(self):
 
         while(self.running):
 
             keys = pygame.key.get_pressed()
             (lm, mm, rm) = pygame.mouse.get_pressed()
-            print lm
             (x, y) = pygame.mouse.get_pos()
 
             # play notes
@@ -91,11 +91,11 @@ class PianoApp:
 
             # act on events
             for event in pygame.event.get():
-                self.on_event(event)
-            self.on_render()
+                self.event(event)
+            self.render()
 
-        self.on_cleanup()
+        self.cleanup()
 
 # run the app
 pianoApp = PianoApp()
-pianoApp.on_execute()
+pianoApp.run()
