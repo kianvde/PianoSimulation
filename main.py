@@ -1,11 +1,11 @@
 from update import *
 from plot_and_save import *
-from Parameters.parametersC5 import n, n_t, n0
+from Parameters.parametersC4 import n, n_t, n0
 
-animate = False          # animate the wave in the string upon completion
+animate = True         # animate the wave in the string upon completion
 plot = False             # plot the waveform and frequency spectrum on the piano bridge
 write_file = True       # write the waveform on the bridge to a .wav file
-filename = "C5.wav"
+filename = "testC4.wav"
 
 # calculate matrices
 A, B = calculate_AB()
@@ -23,7 +23,7 @@ for i in range(n_t):
     if i%10==0 and animate:
         ims.append([u])
 
-    if eta[1] > eta[0]:
+    if eta[1] >= 0.: # eta[0]:
         force = calculate_force(eta[1], u[n0])
         u, u_old = update_displacement(u, u_old, A, B, C, force)
         eta = update_eta(eta, force[n0])

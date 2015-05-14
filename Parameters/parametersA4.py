@@ -2,14 +2,14 @@ import numpy as np
 # in this file the parameters used in the simulation are set
 
 # string parameters
-f1 = 330.36          # fundamental string frequency
-l = 0.529               # string length
-d = 0.977e-3
+f1 = 441.00          # fundamental string frequency
+l = 0.404               # string length
+d = 0.947e-3
 rhoV = 7850.
 A = np.pi * (d/2.)**2
 m_s = A * l * rhoV          # total string mass
 print m_s
-t_e = 720.              # string tension
+t_e = 701.              # string tension
 b1 = 1.1                # air damping coefficient
 b2 = 2.7e-4             # string internal friction coefficient
 rho = m_s/l             # linear string density
@@ -22,7 +22,7 @@ print epsilon
 kappa = epsilon*(c**2)*(l**2)   # string stiffness coefficient
 
 # sampling parameters
-t = 3.                  # simulation time
+t = 1.                  # simulation time
 f_s = 8*44.1e3          # sampling frequency
 m = 100                 # number of string segments
 dx = l/m                # spatial grid distance
@@ -32,10 +32,10 @@ labda = c*dt/dx         # cfl number
 n = m+1                 # number of gridpoints
 
 # hammer parameters
-m_h = 8.46e-3           # hammer mass
-p = 2.468                 # hammer felt stiffness exponent
+m_h = 8.14e-3           # hammer mass
+p = 2.543                 # hammer felt stiffness exponent
 b_h = 1.e-4             # fluid damping coefficient
-k = 9.523e7               # hammer felt stiffness
+k = 1.755e8               # hammer felt stiffness
 a = 0.12                # relative striking position
 v_h = 5.                # initial hammer velocity
 x0 = a*l                # hammer impact point
