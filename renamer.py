@@ -47,5 +47,5 @@ if "piano"+letters[-1]+nums[-1]+".wav" not in present:
     bashPythoncommand = "/home/kian/anaconda/bin/python"
     p = Popen([bashPythoncommand, 'main.py'])
     threadCount += 1
-    time.sleep(1)
+    time.sleep(15)
 print "Thread starter complete - Total number of threads running: " + str(threadCount)
