@@ -4,6 +4,7 @@ try:
     import pygame
     from pygame.locals import *
     from pointers import *
+    from time import time
 except ImportError, err:
     print "couldn't load module. %s" % err
     sys.exit(2)
@@ -25,16 +26,27 @@ class PianoApp:
         # images
         self.up = pygame.image.load("img/key_up.png").convert()
         self.down = pygame.image.load("img/key_down.png").convert()
+        self.w = self.up.get_width()
+        self.h = self.up.get_height()
 
         self.threads = {}       # dict .wav threads
         self.isPressed = {}     # holds key press booleans
+
         for note in notes:
             self.isPressed[note] = False
-            self.threads[note] = WavThread(wav[note])
+            t = time()
+            while True:
+                if time()-t > 5:
+                    print "problem accessing audio device, please close running instances"
+                    sys.exit(2)
+                try:
+                    self.threads[note] = WavThread(wav[note])
+                except IOError: continue
+                break
             self.threads[note].start()
 
-        self.scr = pygame.display.set_mode((len(notes)*self.up.get_width(),
-                                            self.up.get_height()), pygame.HWSURFACE)
+        self.scr = pygame.display.set_mode((len(notes)*self.w,
+                                            self.h), pygame.HWSURFACE)
 
     def on_event(self, event):
         if event.type == QUIT:
@@ -42,18 +54,18 @@ class PianoApp:
 
     def on_render(self):
         for i, note in enumerate(notes):
-            w = self.down.get_width()
-            h = self.down.get_height()
             if self.isPressed[note]:
-                self.scr.blit(self.down,((i*w,0)))
+                self.scr.blit(self.down,((i*self.w,0)))
             else:
-                self.scr.blit(self.up,((i*w,0)))
+                self.scr.blit(self.up,((i*self.w,0)))
 
-            self.scr.blit(self.font.render(note.upper(), True, (0,0,0)), ((i+.5)*w-16, 10))
+            self.scr.blit(self.font.render(note.upper(), True, (0,0,0)), ((i+.5)*self.w-16, 10))
 
         pygame.display.flip()
 
     def on_cleanup(self):
+        for note in notes:
+            self.threads[note].terminate()
         pygame.quit()
 
     def on_execute(self):
@@ -63,10 +75,14 @@ class PianoApp:
         while(self.running):
 
             keys = pygame.key.get_pressed()
+            (lm, mm, rm) = pygame.mouse.get_pressed()
+            print lm
+            (x, y) = pygame.mouse.get_pos()
 
             # play notes
-            for note in notes:
-                if keys[identifier[note]]:
+            for i, note in enumerate(notes):
+                if keys[identifier[note]] or \
+                   (lm and x<(i+1)*self.w and x>i*self.w):
                     if not self.isPressed[note]:
                         self.threads[note].play()
                         self.isPressed[note] = True

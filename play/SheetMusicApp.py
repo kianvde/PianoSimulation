@@ -1,6 +1,11 @@
-from WavThread import *
-from pointers import *
-from time import sleep, time
+try:
+    import sys
+    from WavThread import *
+    from pointers import *
+    from time import sleep, time
+except ImportError, err:
+    print "couldn't load module. %s" % err
+    sys.exit(2)
 
 # App playing sheet music
 
@@ -20,7 +25,15 @@ p = pyaudio.PyAudio()
 
 # start wav threads
 for note in notes:
-    threads[note] = WavThread(wav[note])
+    t = time()
+    while True:
+        if time()-t > 5:
+            print "problem accessing audio device, please close running instances"
+            sys.exit(2)
+        try:
+            threads[note] = WavThread(wav[note])
+        except IOError: continue
+        break
     threads[note].start()
 
 # loop over the notes
