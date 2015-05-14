@@ -5,11 +5,11 @@ import numpy as np
 f1 = 262.1895           # fundamental string frequency
 l = 0.62                # string length
 m_s = 3.934e-3          # total string mass
-t_e = 670.              # string tension
 b1 = 1.1                # air damping coefficient
 b2 = 2.7e-4             # string internal friction coefficient
 epsilon = 3.82e-5       # string stiffness parameter
 rho = m_s/l             # linear string density
+t_e = rho * 4. * l**2 * f1**2
 c = (t_e/rho)**.5       # wave velocity
 kappa = epsilon*(c**2)*(l**2)   # string stiffness coefficient
 
@@ -41,5 +41,5 @@ x = np.linspace(0, l, n)                          # spatial grid points
 g = np.cos(50*np.pi*(x-x0))*(np.abs(x-x0) < .01)    # hammer impact window
 
 print "stable?", labda < 0.8, "=> labda:", labda
-print x[1] - x[0]
-print dx
+print f1
+print c / (2*l)

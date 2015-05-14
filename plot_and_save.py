@@ -9,7 +9,7 @@ from matplotlib.animation import FuncAnimation
 
 
 # parameter imports
-from Parameters.parametersC4 import l, x, t, dt, n_t, f_s
+from Parameters.parametersD4 import l, x, t, dt, n_t, f_s
 
 # animate the string from the saved positions
 def animate_string(ims):

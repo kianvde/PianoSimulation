@@ -9,10 +9,11 @@ rhoV = 7850.
 A = np.pi * (d/2.)**2
 m_s = A * l * rhoV          # total string mass
 print m_s
-t_e = 707.              # string tension
+
 b1 = 1.1                # air damping coefficient
 b2 = 2.7e-4             # string internal friction coefficient
 rho = m_s/l             # linear string density
+t_e = rho * 4. * l**2 * f1**2              # string tension
 c = (t_e/rho)**.5       # wave velocity
 E = 2.02e11
 S = np.pi * (d/2.)**2
@@ -35,7 +36,7 @@ n = m+1                 # number of gridpoints
 m_h = 8.39e-3           # hammer mass
 p = 2.482                 # hammer felt stiffness exponent
 b_h = 1.e-4             # fluid damping coefficient
-k = 1.076e8               # hammer felt stiffness
+k = 1.374e10               # hammer felt stiffness
 a = 0.12                # relative striking position
 v_h = 5.                # initial hammer velocity
 x0 = a*l                # hammer impact point
@@ -49,7 +50,7 @@ x = np.linspace(0, l, n)                          # spatial grid points
 g = np.cos(50*np.pi*(x-x0))*(np.abs(x-x0) < .01)    # hammer impact window
 
 print "stable?", labda < 0.8, "=> labda:", labda
-print x[1] - x[0]
-print dx
+print f1
+print c / (2*l)
 
 

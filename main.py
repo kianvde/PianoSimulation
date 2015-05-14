@@ -1,6 +1,6 @@
 from update import *
 from plot_and_save import *
-from Parameters.parametersC4 import n, n_t, n0
+from Parameters.parametersD4 import n, n_t, n0
 
 animate = True         # animate the wave in the string upon completion
 plot = False             # plot the waveform and frequency spectrum on the piano bridge
