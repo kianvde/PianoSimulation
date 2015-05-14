@@ -2,11 +2,15 @@ import threading
 import pyaudio
 import wave
 
+
+
 class WavThread (threading.Thread):
 
     def __init__(self, wav_file):
-        threading.Thread.__init__(self)
+        super(WavThread, self).__init__()
+        self._stop = threading.Event()
         self.handled = False
+
         self.chunk = 1024
         self.wf = wave.open(wav_file,"rb")
         self.p = pyaudio.PyAudio()
@@ -25,8 +29,16 @@ class WavThread (threading.Thread):
         while data != '':
             self.stream.write(data)
             data = self.wf.readframes(self.chunk)
+            if self.stopped(): break;
 
+    def exit(self):
         # close stream
         self.stream.stop_stream()
         self.stream.close()
         self.p.terminate()
+
+    def stop(self):
+        self._stop.set()
+
+    def stopped(self):
+        return self._stop.isSet()
