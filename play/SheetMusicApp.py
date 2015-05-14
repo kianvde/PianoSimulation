@@ -13,29 +13,33 @@ except ImportError, err:
 # 1 is play note
 # -1 is stop note
 bpm = 120.
-music = {'c3':[1, 0, 1, 0, 1, -1, 1, -1, 1, -1],
-         'cd3':[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-         'd3':[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-         'dd3':[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-         'e3':[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-         'f3':[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-         'fd3':[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],}
+music = {notes[0]: [0],
+         notes[1]: [0],
+         notes[2]: [0],
+         notes[3]: [0],
+         notes[4]: [0],
+         notes[5]: [0],
+         notes[6]: [0],
+         notes[7]: [0],
+         notes[8]: [0],
+         notes[9]: [0],
+         notes[10]: [0]}
 
 
 ## PROGRAM ##
 threads = {}
-p = pyaudio.PyAudio()
 
 # start wav threads
 for note in notes:
     t = time()
     while True:
-        if time()-t > 5:
+        if time()-t > 10:
             print "problem accessing audio device, please close running instances"
             sys.exit(2)
         try:
             threads[note] = WavThread(wav[note])
-        except IOError: continue
+        except IOError:
+            continue
         break
     threads[note].start()
 

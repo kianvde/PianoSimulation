@@ -61,7 +61,7 @@ class PianoApp:
             else:
                 self.scr.blit(self.up,((i*self.w,0)))
 
-            self.scr.blit(pygame.transform.rotate(self.font.render(note.upper(), True, (0,0,0)),90),
+            self.scr.blit(pygame.transform.rotate(self.font.render(note, True, (0,0,0)),90),
                          ((i+.5)*self.w-30, 10))
 
         pygame.display.flip()
