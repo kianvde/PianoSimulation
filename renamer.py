@@ -2,8 +2,8 @@ __author__ = 'kian'
 import os
 # This file is needed to loop over the different keys and produce their .wav file
 # NB This uses the bash command 'sed' !
-letters = ['A','B','C','D','E','F','G']
-nums = ['3','4','5']
+letters = ['A','Ab','Ad','B','C','Cd','D','Dd','E','F','Fd','G']
+nums = ['3','4']
 moduleNext = None
 par = "Parameters.parameters"
 for j, num in enumerate(nums):
@@ -23,5 +23,5 @@ for j, num in enumerate(nums):
         print modulePrev, moduleNext
         bashCommand_module = "sed -i -e 's/" + modulePrev +"/"+ moduleNext+"/g' "+ "./*.py"
         bashCommand_filename = "sed -i -e 's/" + "piano"+tonePrev +"/"+ "piano"+toneNext+"/g' "+ "./*.py"
-        # os.system(bashCommand_module)
-        # os.system(bashCommand_filename)
+        os.system(bashCommand_module)
+        os.system(bashCommand_filename)
