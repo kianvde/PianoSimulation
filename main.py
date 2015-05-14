@@ -4,7 +4,7 @@ from Parameters.parametersA3 import n, n_t, n0
 animate = False         # animate the wave in the string upon completion
 plot = False             # plot the waveform and frequency spectrum on the piano bridge
 write_file = True       # write the waveform on the bridge to a .wav file
-filename = "testB5.wav"
+filename = "testA3.wav"
 
 # calculate matrices
 A, B = calculate_AB()
