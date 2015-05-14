@@ -5,11 +5,13 @@ from time import sleep, time
 # App playing sheet music
 
 ## INPUT ##
+# 1 is play note
+# -1 is stop note
 bpm = 120.
-music = {'c3':[1, 0, 1, 0, 0, 1, 1, 0, 0, 1],
-         'd3':[1, 1, 0, 1, 1, 0, 1, 1, 1, 0],
-         'e3':[0, 0, 1, 0, 0, 0, 1, 0, 1, 0],
-         'f3':[0, 0, 0, 1, 1, 0, 0, 0, 1, 1]}
+music = {'c3':[1, 0, 1, 0, 1, -1, 1, -1, 1, -1],
+         'd3':[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+         'e3':[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+         'f3':[0, 0, 0, 0, 0, 0, 0, 0, 0, 0]}
 
 
 ## PROGRAM ##
@@ -28,6 +30,8 @@ for i in range(min([len(music[note]) for note in notes])):
     for note in notes:
         if music[note][i]==1:
             threads[note].play()
+        elif music[note][i] == -1:
+            threads[note].stop()
 
     sleep(60/bpm-(time()-t))
 
