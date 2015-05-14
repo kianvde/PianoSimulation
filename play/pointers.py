@@ -1,14 +1,14 @@
 from pygame.locals import *
+import os
 
 ## Pointers ##
-notes = ['c3', 'cd3', 'd3', 'dd3', 'e3', 'f3', 'fd3']
-wav = {}                            # wav format file names
-identifier = {'c3':K_1,             # identifiers in a dictionary
-              'cd3':K_2,
-              'd3':K_3,
-              'dd3':K_4,
-              'e3':K_5,
-              'f3':K_6,
-              'fd3':K_7}
+notes = ['C3', 'Cd3', 'D3', 'Dd3', 'E3', 'F3', 'Fd3', 'G3', 'Ab3', 'A3', 'B3']
+_keys = [ K_w,  K_3,   K_e,  K_4,   K_r,  K_t,  K_6,   K_y,  K_7,   K_u,  K_i]
 
-for n in notes: wav[n] = "wav/" + n + ".wav"
+wav = {}                    # wav format file names
+path = os.path.abspath(os.path.join(os.getcwd(), os.pardir))
+for n in notes: wav[n] = path + "\Notes\piano" + n + ".wav"
+
+identifier = {}            # identifiers in a dictionary
+for i, n in enumerate(notes): identifier[n] = _keys[i]
+
