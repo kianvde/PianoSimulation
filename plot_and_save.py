@@ -45,6 +45,9 @@ def plot_u_bridge(u_bridge):
     time_vector = np.linspace(0,t,n_t)
     plt.figure()
     plt.plot(time_vector[-10000:],u_bridge[-10000:])
+    plt.title("Bridge displacement")
+    plt.xlabel("Time [s]")
+    plt.ylabel("y [m]")
     plt.show()
 
 # plot the frequency components at the bridge
@@ -54,6 +57,9 @@ def plot_frequency(u_bridge):
     plt.figure()
     plt.ylim((0, 1.5*max(spectrum[int(n_t/1000):int(n_t/2)])))
     plt.plot(freq[:n_t/160],spectrum[:n_t/160])
+    plt.title("Frequency spectrum A2 at the bridge")
+    plt.xlabel("Frequency [1/s]")
+    plt.ylabel("Magnitude")
     plt.show()
 
 # save u(t) at the bridge to a <filename>.wav file
