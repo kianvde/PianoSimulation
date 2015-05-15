@@ -29,8 +29,10 @@ class PianoApp:
         self.w = self.up.get_width()
         self.h = self.up.get_height()
 
-        self.threads = {}       # dict .wav threads
-        self.isPressed = {}     # holds key press booleans
+
+        self.stop_on_release = False    # releasing key stops playing note
+        self.threads = {}               # dict .wav threads
+        self.isPressed = {}             # holds key press booleans
 
         # initialize .wav threads
         for note in notes:
@@ -87,7 +89,10 @@ class PianoApp:
                         self.threads[note].play()
                         self.isPressed[note] = True
                 else:
+                    if self.stop_on_release and self.isPressed[note]:
+                        self.threads[note].stop()
                     self.isPressed[note] = False
+
 
             # act on events
             for event in pygame.event.get():
