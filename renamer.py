@@ -34,7 +34,7 @@ for j, num in enumerate(nums):
             bashPythoncommand = "/home/kian/anaconda/bin/python"
             threadCount += 1
             p = Popen([bashPythoncommand, 'main.py'])
-        # print modulePrev, moduleNext
+        print modulePrev, moduleNext
         for name in names:
             bashCommand_module = "sed -i -e 's/" + modulePrev +"/"+ moduleNext+"/g' "+ "./"+name+".py"
             os.system(bashCommand_module)
