@@ -11,6 +11,7 @@ except ImportError, err:
 
 # app for playing the wav sounds created by a Piano simulation
 class PianoApp:
+
     def __init__(self):
         self.running = True
         self.scr = None
@@ -25,12 +26,13 @@ class PianoApp:
 
         # images
         self.up = pygame.image.load("img/key_up.png").convert()
+        self.up2 = pygame.image.load("img/key_down2.png").convert()
         self.down = pygame.image.load("img/key_down.png").convert()
+        self.down2 = pygame.image.load("img/key_up2.png").convert()
         self.w = self.up.get_width()
         self.h = self.up.get_height()
 
-
-        self.stop_on_release = False    # releasing key stops playing note
+        self.stop_on_release = True     # releasing key stops playing note
         self.threads = {}               # dict .wav threads
         self.isPressed = {}             # holds key press booleans
 
@@ -59,11 +61,18 @@ class PianoApp:
     def render(self):
         for i, note in enumerate(notes):
             if self.isPressed[note]:
-                self.scr.blit(self.down,((i*self.w,0)))
+                if 'd' in note or 'b' in note:
+                    self.scr.blit(self.down2,((i*self.w,0)))
+                else:
+                    self.scr.blit(self.down,((i*self.w,0)))
             else:
-                self.scr.blit(self.up,((i*self.w,0)))
-
-            self.scr.blit(pygame.transform.rotate(self.font.render(note, True, (0,0,0)),90),
+                if 'd' in note or 'b' in note:
+                    self.scr.blit(self.up2,((i*self.w,0)))
+                    self.scr.blit(pygame.transform.rotate(self.font.render(note, True, (255,255,255)),90),
+                         ((i+.5)*self.w-30, 10))
+                else:
+                    self.scr.blit(self.up,((i*self.w,0)))
+                    self.scr.blit(pygame.transform.rotate(self.font.render(note, True, (0,0,0)),90),
                          ((i+.5)*self.w-30, 10))
 
         pygame.display.flip()
@@ -80,6 +89,8 @@ class PianoApp:
             keys = pygame.key.get_pressed()
             (lm, mm, rm) = pygame.mouse.get_pressed()
             (x, y) = pygame.mouse.get_pos()
+
+            self.stop_on_release = (keys[K_SPACE] == 0)
 
             # play notes
             for i, note in enumerate(notes):
@@ -99,6 +110,7 @@ class PianoApp:
                 self.event(event)
             self.render()
 
+            self.stop_on_release = True
         self.cleanup()
 
 # run the app
