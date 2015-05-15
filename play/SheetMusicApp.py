@@ -12,8 +12,8 @@ except ImportError, err:
 def main():
 
     ## INPUT ##
-    bpm = 100.
-    input_file = "test.txt"
+    bpm = 220.
+    input_file = "Greensleeves.txt"
 
     ## PROGRAM ##
     notes, music, wav = read_file(input_file)
@@ -44,14 +44,15 @@ def read_file(input_file):
     f = open(input_file)
     lines = f.readlines()
     for line in lines:
-        content = line.split(" ")
-        notes.append(content[0])
+        content = [x.rstrip() for x in line.split(" ")]
+        notes.append(content[0].rstrip())
         music[content[0]] = [int(x) for x in content[1:] if x in ["-1", "0", "1"]]
 
     wav = {}
     path = os.path.abspath(os.path.join(os.getcwd(), os.pardir))
     for n in notes: wav[n] = path + "\Notes\piano" + n + ".wav"
 
+    print notes
     return notes, music, wav
 
 def start_wav_threads(notes, wav):
@@ -61,6 +62,7 @@ def start_wav_threads(notes, wav):
         while True:
             if time()-t > 10:
                 print "problem accessing audio device, please close running instances"
+                print note
                 sys.exit(2)
             try:
                 threads[note] = WavThread(wav[note])
