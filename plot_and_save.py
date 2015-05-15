@@ -15,7 +15,8 @@ from Parameters.parametersC4 import l, x, t, dt, n_t, f_s, f1
 def animate_string(ims):
 
     y_max = y_min = 0
-    for [im] in ims:
+    for i in range(n_t/10):
+        im = ims[i,:]
         if max(im) > y_max:
             y_max = max(im)
         if min(im) < y_min:

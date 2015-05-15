@@ -2,7 +2,7 @@ from update import *
 from plot_and_save import *
 from Parameters.parametersC4 import n, n_t, n0
 
-animate = False         # animate the wave in the string upon completion
+animate = True          # animate the wave in the string upon completion
 plot = True             # plot the waveform and frequency spectrum on the piano bridge
 write_file = True       # write the waveform on the bridge to a .wav file
 filename = "C4.wav"
@@ -15,13 +15,13 @@ C = calculate_C()
 eta = update_eta(init=True)
 u = u_old = 1.*np.zeros(n)
 
-ims = []
+ims = np.zeros((n_t/10, n))
 u_bridge = np.zeros(n_t)
 for i in range(n_t):
 
     u_bridge[i] = u[-1]
     if i%10==0 and animate:
-        ims.append([u])
+        ims[i/10,:] = u
 
     if eta[1] >= 0.: # eta[0]:
         force = calculate_force(eta[1], u[n0])
