@@ -9,7 +9,7 @@ from matplotlib.animation import FuncAnimation
 
 
 # parameter imports
-from Parameters.parametersA2 import l, x, t, dt, n_t, f_s
+from Parameters.parametersC4 import l, x, t, dt, n_t, f_s, f1
 
 # animate the string from the saved positions
 def animate_string(ims):
@@ -57,6 +57,8 @@ def plot_frequency(u_bridge):
     plt.figure()
     plt.ylim((0, 1.5*max(spectrum[int(n_t/1000):int(n_t/2)])))
     plt.plot(freq[:n_t/160],spectrum[:n_t/160])
+    for i in range(4):
+        plt.axvline((i+1)*f1, color='r')
     plt.title("Frequency spectrum A2 at the bridge")
     plt.xlabel("Frequency [1/s]")
     plt.ylabel("Magnitude")
@@ -71,7 +73,5 @@ def save_to_wav(u_bridge, filename):
     samples = u_norm.astype(int)
     NumElements = len(samples)
     u_wav = struct.pack('h'*NumElements,*samples)
-    # print u_wav
-    # u_wav = struct.pack('h', samples.tolist())
     w.writeframes(u_wav)
     w.close()

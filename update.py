@@ -4,10 +4,10 @@ import numpy as np
 import scipy.sparse as sparse
 
 # parameter imports
-from Parameters.parametersA2 import b_h, m_h, v_h, g
-from Parameters.parametersA2 import labda, kappa, rho
-from Parameters.parametersA2 import b1, b2, zeta_l, zeta_b
-from Parameters.parametersA2 import c, dx, dt, n, k, p
+from Parameters.parametersC4 import b_h, m_h, v_h, g
+from Parameters.parametersC4 import labda, kappa, rho
+from Parameters.parametersC4 import b1, b2, zeta_l, zeta_b
+from Parameters.parametersC4 import c, dx, dt, n, k, p
 
 # update the vector with eta values
 # eta -> vector with eta values
