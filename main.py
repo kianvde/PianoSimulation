@@ -1,11 +1,11 @@
 from update import *
 from plot_and_save import *
-from Parameters.parametersC4 import n, n_t, n0
+from Parameters.parametersA2 import n, n_t, n0
 
-animate = True          # animate the wave in the string upon completion
-plot = True             # plot the waveform and frequency spectrum on the piano bridge
+animate = False          # animate the wave in the string upon completion
+plot = False             # plot the waveform and frequency spectrum on the piano bridge
 write_file = True       # write the waveform on the bridge to a .wav file
-filename = "C4.wav"
+filename = "./Notes/pianoA2.wav"
 
 # calculate matrices
 A, B = calculate_AB()
@@ -30,7 +30,7 @@ for i in range(n_t):
     else:
         u, u_old = update_displacement(u, u_old, A, B)
 
-    print float(i)/n_t
+    # print float(i)/n_t
 
 # animate, plot and save
 if animate: animate_string(ims)
